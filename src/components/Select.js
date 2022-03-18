@@ -31,6 +31,7 @@ const SelectListItem = styled.li`
   display: flex;
   align-items: center;
   cursor: pointer;
+  justify-content: space-between;
 `;
 
 const CheckIcon = styled(FontAwesomeIcon)`
@@ -42,19 +43,21 @@ const ListItem = ({
   onClick,
 }) => (
   <SelectListItem onClick={() => onClick(value)}>
-    {isChecked && <CheckIcon icon={faCheck} />}
     {label}
+    {isChecked && <CheckIcon icon={faCheck} />}
   </SelectListItem>
 );
 
-const Select = ({ options, selectedValue, onChange }) => {
+const Select = ({ options, value, onSelectedChange }) => {
   const [isOpen, setIsOpen] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(value);
 
   const selectedOption = useMemo(() => (options.find((x) => x.value === selectedValue)), [options, selectedValue]);
 
-  const handleClick = (v) => {
-    onChange(v);
+  const handleClick = (val) => {
+    setSelectedValue(val);
     setIsOpen(false);
+    onSelectedChange(val);
   };
 
   return (

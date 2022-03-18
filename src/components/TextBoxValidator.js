@@ -11,6 +11,8 @@ const InputHeader = styled.div`
 
 const Input = styled.input`
   border: 0;
+  padding: 0;
+  margin: 0;
   width: 100%;
 
   &:focus {
@@ -42,24 +44,25 @@ const Icon = styled(FontAwesomeIcon)`
   margin-right: 5px;
 `;
 
-const TextBoxValidator = ({ rules }) => {
+const TextBoxValidator = ({ validationRules, value, onChange, ...props }) => {
   const [isOpen, setIsOpen] = useState();
   const [validators, setValidators] = useState();
 
   const isTextError = useMemo(() => (validators && validators.filter(x => !x.isValid).length), [validators]);
 
   const handleOnChange = (e) => {
-    const text = e.target.value;
+    const val = e.target.value;
     const arr = [];
-    rules.forEach(rule => {
+    validationRules.forEach(rule => {
       const re = new RegExp(rule.expression);
       const { label } = rule;
       arr.push({
         label,
-        isValid: re.test(text),
+        isValid: re.test(val),
       });
     });
     setValidators(arr);
+    onChange(e);
   };
 
   const handleIconClick = () => {
@@ -70,8 +73,7 @@ const TextBoxValidator = ({ rules }) => {
     <>
       <Container>
         <InputHeader>
-          <Input type="text" onChange={handleOnChange} />
-          {/* {validators && <IconButton onClick={handleIconClick}><Icon color={isTextError ? '#d32f2f' : '#2e7d32'} icon={isTextError ? faTimesCircle : faCheckCircle} /></IconButton>} */}
+          <Input type="text" value={value} onChange={handleOnChange} {...props} />
           {validators && <Icon color={isTextError ? '#d32f2f' : '#2e7d32'} icon={isTextError ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />}
         </InputHeader>
       </Container>
