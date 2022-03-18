@@ -29,5 +29,6 @@ module.exports = {
     'react/prop-types': 0,
     'no-unused-vars': 'warn',
     'max-len': 0,
+    'arrow-parens': 0,
   },
 };

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Container = styled.div`
   width: 150px;
   cursor: pointer;
+  position: relative;
 `;
 
 const SelectHeader = styled.div`
@@ -20,18 +21,20 @@ const SelectListContainer = styled.ul`
   border: 1px solid;
   padding: 0;
   margin: 0;
+  position: absolute;
+  background-color: #fff;
+  width: 150px;
 `;
 
 const SelectListItem = styled.li`
   padding: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   cursor: pointer;
 `;
 
 const CheckIcon = styled(FontAwesomeIcon)`
-  margin-left: 10px;
+  margin-right: 5px;
 `;
 
 const ListItem = ({
@@ -39,8 +42,8 @@ const ListItem = ({
   onClick,
 }) => (
   <SelectListItem onClick={() => onClick(value)}>
-    {label}
     {isChecked && <CheckIcon icon={faCheck} />}
+    {label}
   </SelectListItem>
 );
 
@@ -72,7 +75,4 @@ const Select = ({ options, selectedValue, onChange }) => {
   );
 };
 
-export {
-  Select,
-  ListItem,
-};
+export default Select;
