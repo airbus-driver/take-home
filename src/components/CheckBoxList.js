@@ -25,7 +25,8 @@ const Input = styled.input`
   }
 `;
 
-const CheckBoxList = ({ options, value, onSelectedChange }) => {
+const CheckBoxList = ({ options, value, onFieldChange, ...props }) => {
+  const { name } = props;
   const [selectedValues, setSelectedValues] = useState(value);
 
   const handleOnChange = (e) => {
@@ -37,14 +38,14 @@ const CheckBoxList = ({ options, value, onSelectedChange }) => {
       arr = [...selectedValues, val];
     }
     setSelectedValues(arr);
-    onSelectedChange(arr);
+    onFieldChange(arr);
   };
 
   return (
     <CheckBoxContainer>
       {options.map((item, index) => (
-        <CheckBoxItem key={index} value={item.value}>
-          <Input type="checkbox" value={item.value} checked={selectedValues && selectedValues.includes(item.value)} onChange={handleOnChange} />
+        <CheckBoxItem key={`cbl-${item.value}-${index}`} value={item.value}>
+          <Input name={`${name}.${item.value}`} type="checkbox" value={item.value} checked={selectedValues && selectedValues.includes(item.value)} onChange={handleOnChange} />
           <label>{item.label}</label>
         </CheckBoxItem>
       ))}

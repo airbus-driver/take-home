@@ -1,7 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Menu from './Menu';
+import MenuItem from './MenuItem';
+import Icon from './Icon';
+import { theme } from '../common/theme';
 
 const InputHeader = styled.div`
   border: 1px solid;
@@ -20,31 +24,12 @@ const Input = styled.input`
   }
 `;
 
-const RulesContainer = styled.ul`
-  border: 1px solid;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  background-color: #fff;
-  width: 100%;
-`;
-
-const RuleItem = styled.li`
-  padding: 5px;
-  display: flex;
-  align-items: center;
-`;
-
 const Container = styled.div`
   width: 100%;
 `;
 
-const Icon = styled(FontAwesomeIcon)`
-  color: ${({ color }) => color || 'inherit'};
-  margin-right: 5px;
-`;
-
-const TextBoxValidator = ({ validationRules, value, onChange, ...props }) => {
+const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) => {
+  const [referenceRef, setReferenceRef] = useState(null);
   const [isOpen, setIsOpen] = useState();
   const [validators, setValidators] = useState();
 
@@ -62,32 +47,40 @@ const TextBoxValidator = ({ validationRules, value, onChange, ...props }) => {
       });
     });
     setValidators(arr);
-    onChange(e);
+    onFieldChange(val);
   };
 
   const handleIconClick = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <>
-      <Container>
-        <InputHeader>
-          <Input type="text" value={value} onChange={handleOnChange} {...props} />
-          {validators && <Icon color={isTextError ? '#d32f2f' : '#2e7d32'} icon={isTextError ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />}
-        </InputHeader>
-      </Container>
+    <Container>
+      <InputHeader ref={setReferenceRef} >
+        <Input type="text" value={value} {...props} onChange={handleOnChange} />
+        {validators && <Icon color={isTextError ? '#d32f2f' : '#2e7d32'} icon={isTextError ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />}
+      </InputHeader>
       {isOpen
-        && <RulesContainer>
-          {validators && validators.map((item, index) => (
-            <RuleItem key={index}>
-              <Icon color={!item.isValid ? '#d32f2f' : '#2e7d32'} icon={!item.isValid ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />
-              {item.label}
-            </RuleItem>
-          ))}
-        </RulesContainer>
+      && <Menu el={referenceRef} onClose={handleClose}>
+        {validators && validators.map((item, index) => (
+          <MenuItem
+            key={`tbv-${index}`}
+            label={item.label}
+            icon={
+              <Icon
+                color={!item.isValid ? theme.colors.negative : theme.colors.positive}
+                icon={!item.isValid ? faTimesCircle : faCheckCircle}
+              />
+            }
+          />
+        ))}
+      </Menu>
       }
-    </>
+    </Container>
   );
 };
 

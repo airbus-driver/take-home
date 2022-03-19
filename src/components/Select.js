@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import { faCaretDown, faCaretUp, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import Menu from './Menu';
+import MenuItem from './MenuItem';
+import Icon from './Icon';
+
 const Container = styled.div`
   width: 150px;
-  cursor: pointer;
-  position: relative;
+  cursor: default;
 `;
 
 const SelectHeader = styled.div`
@@ -17,38 +20,8 @@ const SelectHeader = styled.div`
   padding: 5px;
 `;
 
-const SelectListContainer = styled.ul`
-  border: 1px solid;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  background-color: #fff;
-  width: 150px;
-`;
-
-const SelectListItem = styled.li`
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-`;
-
-const CheckIcon = styled(FontAwesomeIcon)`
-  margin-right: 5px;
-`;
-
-const ListItem = ({
-  label, value, isChecked,
-  onClick,
-}) => (
-  <SelectListItem onClick={() => onClick(value)}>
-    {label}
-    {isChecked && <CheckIcon icon={faCheck} />}
-  </SelectListItem>
-);
-
-const Select = ({ options, value, onSelectedChange }) => {
+const Select = ({ options, value, onFieldChange }) => {
+  const [referenceRef, setReferenceRef] = useState(null);
   const [isOpen, setIsOpen] = useState(null);
   const [selectedValue, setSelectedValue] = useState(value);
 
@@ -57,22 +30,31 @@ const Select = ({ options, value, onSelectedChange }) => {
   const handleClick = (val) => {
     setSelectedValue(val);
     setIsOpen(false);
-    onSelectedChange(val);
+    onFieldChange(val);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   return (
     <Container>
-      <SelectHeader onClick={() => setIsOpen(!isOpen)}>
+      <SelectHeader onClick={() => setIsOpen(!isOpen)} ref={setReferenceRef}>
         <span>{selectedOption.label}</span>
         <FontAwesomeIcon icon={!isOpen ? faCaretDown : faCaretUp } />
-        <input type="hidden" value={selectedValue} />
       </SelectHeader>
       {isOpen
-        && <SelectListContainer>
+        && <Menu el={referenceRef} onClose={handleClose}>
           {options.map((item, index) => (
-            <ListItem key={index} label={item.label} value={item.value} isChecked={item.value === selectedValue} onClick={handleClick} />
+            <MenuItem
+              key={`select-${item.value}-${index}`}
+              label={item.label}
+              value={item.value}
+              onClick={handleClick}
+              icon={item.value === selectedValue && <Icon icon={faCheck} />}
+            />
           ))}
-        </SelectListContainer>
+        </Menu>
       }
     </Container>
   );
