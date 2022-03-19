@@ -7,14 +7,22 @@ const Item = styled.li`
   align-items: center;
 `;
 
-const MenuItem = ({ label, value, onClick, icon }) => {
+const StartIcon = styled.span`
+  margin-right: 5px;
+`;
+
+const EndIcon = styled.span`
+  margin-left: 5px;
+`;
+const MenuItem = ({ label, value, onClick, startIcon, endIcon }) => {
   return (
     <Item
       value={value}
       onClick={() => onClick && onClick(value)}
     >
-      {icon}
+      {startIcon && <StartIcon>{startIcon}</StartIcon>}
       {label}
+      {endIcon && <EndIcon>{endIcon}</EndIcon>}
     </Item>
   );
 };

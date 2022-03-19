@@ -41,7 +41,7 @@ const Select = ({ options, value, onFieldChange }) => {
     <Container>
       <SelectHeader onClick={() => setIsOpen(!isOpen)} ref={setReferenceRef}>
         <span>{selectedOption.label}</span>
-        <FontAwesomeIcon icon={!isOpen ? faCaretDown : faCaretUp } />
+        <FontAwesomeIcon icon={faCaretDown} />
       </SelectHeader>
       {isOpen
         && <Menu el={referenceRef} onClose={handleClose}>
@@ -51,7 +51,7 @@ const Select = ({ options, value, onFieldChange }) => {
               label={item.label}
               value={item.value}
               onClick={handleClick}
-              icon={item.value === selectedValue && <Icon icon={faCheck} />}
+              endIcon={item.value === selectedValue && <Icon icon={faCheck} />}
             />
           ))}
         </Menu>

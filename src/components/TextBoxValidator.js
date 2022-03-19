@@ -70,7 +70,7 @@ const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) =
           <MenuItem
             key={`tbv-${index}`}
             label={item.label}
-            icon={
+            startIcon={
               <Icon
                 color={!item.isValid ? theme.colors.negative : theme.colors.positive}
                 icon={!item.isValid ? faTimesCircle : faCheckCircle}
