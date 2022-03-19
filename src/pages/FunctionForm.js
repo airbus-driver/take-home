@@ -44,12 +44,8 @@ const FunctionForm = ({ data, onSubmit }) => {
       onSubmit={onSubmit}
       validate={validate}
     >
-      {({ values, errors, touched, isValid, setFieldValue }) => (
+      {({ values, setFieldValue }) => (
         <Form noValidate>
-          <pre>{JSON.stringify(values)}</pre>
-          <pre>{JSON.stringify(errors)}</pre>
-          <pre>{JSON.stringify(touched)}</pre>
-          <pre>{JSON.stringify(isValid)}</pre>
           {Object.keys(data).map((key, index) => {
             const fieldObj = data[key];
             return (
