@@ -1,26 +1,27 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
-import { faCaretDown, faCaretUp, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 import Icon from './Icon';
 
-const Container = styled.div`
-  width: 150px;
-  cursor: default;
-`;
-
 const SelectHeader = styled.div`
   display: flex;
-  border: 1px solid;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: space-between;
   align-items: center;
   padding: 5px;
+
+  &:focus-within {
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.colors.borderFocus};
+  }
 `;
 
-const Select = ({ options, value, onFieldChange }) => {
+const Select = ({ options, value, onFieldChange, ...props }) => {
+  const { tabIndex } = props;
   const [referenceRef, setReferenceRef] = useState(null);
   const [isOpen, setIsOpen] = useState(null);
   const [selectedValue, setSelectedValue] = useState(value);
@@ -38,8 +39,8 @@ const Select = ({ options, value, onFieldChange }) => {
   };
 
   return (
-    <Container>
-      <SelectHeader onClick={() => setIsOpen(!isOpen)} ref={setReferenceRef}>
+    <>
+      <SelectHeader onClick={() => setIsOpen(!isOpen)} ref={setReferenceRef} tabIndex={tabIndex}>
         <span>{selectedOption.label}</span>
         <FontAwesomeIcon icon={faCaretDown} />
       </SelectHeader>
@@ -56,7 +57,7 @@ const Select = ({ options, value, onFieldChange }) => {
           ))}
         </Menu>
       }
-    </Container>
+    </>
   );
 };
 

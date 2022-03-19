@@ -5,27 +5,18 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 import Icon from './Icon';
-import { theme } from '../common/theme';
+import Input from './Input';
+import { colors } from '../common/theme';
 
 const InputHeader = styled.div`
-  border: 1px solid;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   padding: 5px;
-`;
 
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-
-  &:focus {
+  &:focus-within {
     outline: none;
+    border: 1px solid ${({ theme }) => theme.colors.borderFocus};
   }
-`;
-
-const Container = styled.div`
-  width: 100%;
 `;
 
 const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) => {
@@ -59,10 +50,10 @@ const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) =
   };
 
   return (
-    <Container>
+    <>
       <InputHeader ref={setReferenceRef} >
-        <Input type="text" value={value} {...props} onChange={handleOnChange} />
-        {validators && <Icon color={isTextError ? '#d32f2f' : '#2e7d32'} icon={isTextError ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />}
+        <Input width="100%" type="text" value={value} {...props} onChange={handleOnChange} />
+        {validators && <Icon color={isTextError ? colors.negative : colors.positive} icon={isTextError ? faTimesCircle : faCheckCircle} onClick={handleIconClick} />}
       </InputHeader>
       {isOpen
       && <Menu el={referenceRef} onClose={handleClose}>
@@ -72,7 +63,7 @@ const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) =
             label={item.label}
             startIcon={
               <Icon
-                color={!item.isValid ? theme.colors.negative : theme.colors.positive}
+                color={!item.isValid ? colors.negative : colors.positive}
                 icon={!item.isValid ? faTimesCircle : faCheckCircle}
               />
             }
@@ -80,7 +71,7 @@ const TextBoxValidator = ({ validationRules, value, onFieldChange, ...props }) =
         ))}
       </Menu>
       }
-    </Container>
+    </>
   );
 };
 

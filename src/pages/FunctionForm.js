@@ -2,26 +2,8 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import styled from 'styled-components';
 
+import { FormField, Label, Button } from '../components';
 import components from './types';
-
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0 10px 0;
-`;
-
-const FieldLabel = styled.label`
-  margin-bottom: 10px;
-
-  b {
-    color: #d32f2f;
-  }
-`;
-
-const Button = styled.button`
-  height: 33px;
-  width: 120px;
-`;
 
 const ActionButtons = styled.div`
   margin-top: 20px;
@@ -68,7 +50,7 @@ const FunctionForm = ({ data, onSubmit }) => {
           <pre>{JSON.stringify(errors)}</pre>
           <pre>{JSON.stringify(touched)}</pre>
           <pre>{JSON.stringify(isValid)}</pre>
-          {Object.keys(data).map(key => {
+          {Object.keys(data).map((key, index) => {
             const fieldObj = data[key];
             return (
               <Field
@@ -78,10 +60,10 @@ const FunctionForm = ({ data, onSubmit }) => {
                 {({ field }) => {
                   return (
                     <FormField>
-                      <FieldLabel htmlFor={key}>
+                      <Label htmlFor={key}>
                         {fieldObj.required && <b>*</b>}
                         {fieldObj.label}
-                      </FieldLabel>
+                      </Label>
                       {React.createElement(components[fieldObj.type], {
                         ...fieldObj,
                         ...field,
@@ -89,6 +71,7 @@ const FunctionForm = ({ data, onSubmit }) => {
                         onFieldChange: (val) => {
                           setFieldValue(key, val);
                         },
+                        tabIndex: index + 1,
                       })}
                     </FormField>
                   );

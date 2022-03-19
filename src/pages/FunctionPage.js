@@ -1,13 +1,8 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
 import * as _ from 'lodash';
 
 import FunctionForm from './FunctionForm';
-
-const Container = styled.div`
-  padding: 20px;
-  width: 400px;
-`;
+import { Card } from '../components';
 
 const FunctionPage = () => {
   const formData = useMemo(() => ({
@@ -88,14 +83,15 @@ const FunctionPage = () => {
       const field = formData[key]?.model;
       _.set(newObj, field, payload[key]);
     });
+    // eslint-disable-next-line no-console
     console.log(newObj);
   };
 
   return (
-    <Container>
+    <Card>
       <h4>Create New Function</h4>
       <FunctionForm data={formData} onSubmit={handleSubmit} />
-    </Container>
+    </Card>
   );
 };
 

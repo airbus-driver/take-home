@@ -5,6 +5,7 @@ const Item = styled.li`
   padding: 5px;
   display: flex;
   align-items: center;
+  cursor: default;
 `;
 
 const StartIcon = styled.span`
@@ -12,6 +13,9 @@ const StartIcon = styled.span`
 `;
 
 const EndIcon = styled.span`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
   margin-left: 5px;
 `;
 const MenuItem = ({ label, value, onClick, startIcon, endIcon }) => {

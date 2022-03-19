@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import Input from './Input';
+
 const CheckBoxContainer = styled.ul`
-  border: 1px solid;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 0;
   margin: 0;
   background-color: #fff;
   width: 100%;
+  background: inherit;
+
+  &:focus-within {
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.colors.borderFocus};
+  }
 `;
 
 const CheckBoxItem = styled.li`
@@ -15,18 +23,8 @@ const CheckBoxItem = styled.li`
   align-items: center;
 `;
 
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  margin-right: 5px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 const CheckBoxList = ({ options, value, onFieldChange, ...props }) => {
-  const { name } = props;
+  const { name, tabIndex } = props;
   const [selectedValues, setSelectedValues] = useState(value);
 
   const handleOnChange = (e) => {
@@ -42,7 +40,7 @@ const CheckBoxList = ({ options, value, onFieldChange, ...props }) => {
   };
 
   return (
-    <CheckBoxContainer>
+    <CheckBoxContainer tabIndex={tabIndex}>
       {options.map((item, index) => (
         <CheckBoxItem key={`cbl-${item.value}-${index}`} value={item.value}>
           <Input name={`${name}.${item.value}`} type="checkbox" value={item.value} checked={selectedValues && selectedValues.includes(item.value)} onChange={handleOnChange} />
